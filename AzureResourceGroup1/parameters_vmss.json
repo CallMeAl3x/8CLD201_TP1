@@ -2,17 +2,172 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "virtualMachineScaleSets_myVMSS_name": {
+    "location": {
+      "value": "canadacentral"
+    },
+    "osDiskType": {
+      "value": "Premium_LRS"
+    },
+    "virtualNetworkId": {
+      "value": "/subscriptions/24be8910-56d3-4f24-ad46-85f03521f320/resourceGroups/myVMSS_group/providers/Microsoft.Network/virtualNetworks/vnet-canadacentral"
+    },
+    "virtualNetworkName": {
+      "value": "vnet-canadacentral"
+    },
+    "networkSecurityGroups": {
+      "value": [
+        {
+          "name": "basicNsgvnet-canadacentral-nic01",
+          "id": "/subscriptions/24be8910-56d3-4f24-ad46-85f03521f320/resourceGroups/myVMSS_group/providers/Microsoft.Network/networkSecurityGroups/basicNsgvnet-canadacentral-nic01",
+          "rules": [
+            {
+              "name": "Tcp",
+              "properties": {
+                "priority": 300,
+                "protocol": "Tcp",
+                "access": "Allow",
+                "direction": "Inbound",
+                "sourceAddressPrefix": "*",
+                "sourcePortRange": "*",
+                "destinationAddressPrefix": "*",
+                "destinationPortRange": "80"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "networkInterfaceConfigurations": {
+      "value": [
+        {
+          "name": "vnet-canadacentral-nic01",
+          "primary": true,
+          "subnetId": "/subscriptions/24be8910-56d3-4f24-ad46-85f03521f320/resourceGroups/myVMSS_group/providers/Microsoft.Network/virtualNetworks/vnet-canadacentral/subnets/snet-canadacentral-1",
+          "applicationGatewayBackendAddressPools": [],
+          "loadBalancerBackendAddressPools": [
+            {
+              "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancerName'), parameters('backendPoolName'))]"
+            }
+          ],
+          "applicationSecurityGroups": [],
+          "loadBalancerInboundNatPools": [],
+          "enableAcceleratedNetworking": false,
+          "nsgName": "basicNsgvnet-canadacentral-nic01",
+          "nsgId": "/subscriptions/24be8910-56d3-4f24-ad46-85f03521f320/resourceGroups/myVMSS_group/providers/Microsoft.Network/networkSecurityGroups/basicNsgvnet-canadacentral-nic01",
+          "pipName": "publicIp-vnet-canadacentral-nic01"
+        }
+      ]
+    },
+    "backendPoolName": {
+      "value": "bepool"
+    },
+    "loadBalancerName": {
+      "value": "myLoadBalancer"
+    },
+    "loadbalancingRuleFrontEndPort": {
+      "value": 80
+    },
+    "loadbalancingRuleBackendEndPort": {
+      "value": 80
+    },
+    "loadbalancingRuleProtocol": {
+      "value": "Tcp"
+    },
+    "InboundNATRuleFrontEndPortRangeStart": {
+      "value": 50000
+    },
+    "vmName": {
+      "value": "myVMSS"
+    },
+    "virtualMachineScaleSetName": {
+      "value": "myVMSS"
+    },
+    "instanceCount": {
+      "value": "2"
+    },
+    "instanceSize": {
+      "value": "Standard_D2s_v3"
+    },
+    "platformFaultDomainCount": {
+      "value": "1"
+    },
+    "scaleInPolicy": {
+      "value": {
+        "rules": [
+          "Default"
+        ],
+        "forceDeletion": false
+      }
+    },
+    "upgradePolicy": {
+      "value": "Manual"
+    },
+    "hibernationEnabled": {
+      "value": false
+    },
+    "adminUsername": {
+      "value": "vmadmin"
+    },
+    "adminPassword": {
       "value": null
     },
-    "virtualNetworks_vnet_canadacentral_externalid": {
+    "customData": {
       "value": null
     },
-    "loadBalancers_myLoadBalancer_externalid": {
-      "value": null
+    "securityType": {
+      "value": "TrustedLaunch"
     },
-    "networkSecurityGroups_basicNsgvnet_canadacentral_nic01_externalid": {
-      "value": null
+    "secureBoot": {
+      "value": true
+    },
+    "vTPM": {
+      "value": true
+    },
+    "vnetLocation": {
+      "value": "canadacentral"
+    },
+    "vnetExtendedLocation": {
+      "value": {}
+    },
+    "vnetVirtualNetworkName": {
+      "value": "vnet-canadacentral"
+    },
+    "vnetResourceGroupName": {
+      "value": "myVMSS_group"
+    },
+    "vnetDeploymentName": {
+      "value": "network-interface-associated-virtual-network-20241108180455"
+    },
+    "vnetNatGatewaysWithNewPublicIpAddress": {
+      "value": []
+    },
+    "vnetNatGatewaysWithoutNewPublicIpAddress": {
+      "value": []
+    },
+    "vnetNatGatewayPublicIpAddressesNewNames": {
+      "value": []
+    },
+    "vnetNetworkSecurityGroupsNew": {
+      "value": []
+    },
+    "vnetProperties": {
+      "value": {
+        "subnets": [
+          {
+            "name": "snet-canadacentral-1",
+            "properties": {
+              "addressPrefixes": [
+                "172.16.0.0/24"
+              ]
+            }
+          }
+        ],
+        "addressSpace": {
+          "addressPrefixes": [
+            "172.16.0.0/16"
+          ]
+        }
+      }
     }
   }
 }
