@@ -2,13 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "myVaultKeyy_name": {
-      "defaultValue": "AdminMDPP",
+    "vaults_myVaultKeyy_name": {
+      "defaultValue": "myVaultKeyy",
       "type": "String"
     },
-    "secretValue": {
-      "type": "SecureString",
-      "defaultValue": "JesuislesecretValue"
+    "motDePasseSecret": {
+      "type": "secureString",
+      "defaultValue": "monMotDePasse"
     }
   },
   "variables": {},
@@ -35,6 +35,17 @@
         "provisioningState": "Succeeded",
         "publicNetworkAccess": "Enabled"
       }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2021-04-01-preview",
+      "name": "[concat(parameters('vaults_myVaultKeyy_name'), '/motDePasse')]",
+      "properties": {
+        "value": "[parameters('motDePasseSecret')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_myVaultKeyy_name'))]"
+      ]
     }
   ]
 }
