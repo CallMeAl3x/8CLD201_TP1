@@ -1,0 +1,22 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - nginx
+write_files:
+  - path: /etc/nginx/sites-available/default
+    content: |
+      server {
+        listen 80;
+        server_name localhost;
+        root /var/www/html;
+        index index.html;
+        
+        location / {
+            try_files $uri $uri/ =404;
+        }
+      }
+runcmd:
+  # Télécharger le fichier HTML depuis GitHub
+  - wget -O /var/www/html/index.html https://raw.githubusercontent.com/mooi03/test/main/index.html
+  # Démarrer Nginx
+  - service nginx restart
