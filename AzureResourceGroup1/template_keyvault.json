@@ -8,7 +8,7 @@
     },
     "motDePasseSecret": {
       "type": "secureString",
-      "defaultValue": "monMotDePasse"
+      "defaultValue": "monMotDePasse1234"
     }
   },
   "variables": {},
