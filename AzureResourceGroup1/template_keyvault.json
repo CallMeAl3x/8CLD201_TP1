@@ -2,9 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vaults_myVaultKeyy_name": {
-      "defaultValue": "myVaultKeyy",
+    "vaults_AdminMDP_name": {
+      "defaultValue": "AdminMDPP",
       "type": "String"
+    },
+    "secretValue": {
+      "type": "SecureString",
+      "defaultValue": "JesuislesecretValue"
     }
   },
   "variables": {},
