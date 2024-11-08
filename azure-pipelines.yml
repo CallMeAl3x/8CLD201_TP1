@@ -65,11 +65,11 @@ steps:
   inputs:
     azureSubscription: 'Azure subscription 1(1)(24be8910-56d3-4f24-ad46-85f03521f320)'
     KeyVaultName: '$(keyName)'
-    SecretsFilter: 'MDP'
+    SecretsFilter: 'motDePasse'
     RunAsPreJob: false
 
 - script: | 
-      echo New value $(AzureKey.MDP)
+      echo New value $(AzureKey.motDePasse)
 
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template VM'
@@ -83,7 +83,7 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_vmss.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_vmss.json'
-    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(MDP)'
+    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(motDePasse)'
     deploymentMode: 'Validation'
 
 - task: AzureResourceManagerTemplateDeployment@3
@@ -98,5 +98,5 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_vmss.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_vmss.json'
-    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(MDP)'
+    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(motDePasse)'
     deploymentMode: 'Incremental'
