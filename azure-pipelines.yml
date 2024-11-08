@@ -25,7 +25,7 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_keyvault.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_keyvault.json'
-    overrideParameters: '-vaults_AdminMDP_name $(nomKey)'
+    overrideParameters: '-myVaultKeyy_name $(keyName)'
     deploymentMode: 'Validation'
 
 - task: AzureResourceManagerTemplateDeployment@3
@@ -40,7 +40,7 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_keyvault.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_keyvault.json'
-    overrideParameters: '-vaults_AdminMDP_name $(nomKey)'
+    overrideParameters: '-myVaultKeyy_name $(keyName)'
     deploymentMode: 'Incremental'
 - task: PowerShell@2
   displayName: 'Could Init'
@@ -60,7 +60,7 @@ steps:
   displayName: 'Azure key-vault password'
   inputs:
     azureSubscription: 'Azure subscription 1(1)(24be8910-56d3-4f24-ad46-85f03521f320)'
-    KeyVaultName: '$(nomKey)'
+    KeyVaultName: '$(keyName)'
     SecretsFilter: 'MDP'
     RunAsPreJob: false
 
