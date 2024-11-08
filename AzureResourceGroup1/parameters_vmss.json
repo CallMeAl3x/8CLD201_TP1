@@ -1,45 +1,18 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "sshPublicKeys_my_key_name": {
-            "value": null
-        },
-        "virtualNetworks_my_vnet_name": {
-            "value": null
-        },
-        "loadBalancers_myLoadBalancer_name": {
-            "value": null
-        },
-        "virtualMachineScaleSets_myVMSS_name": {
-            "value": null
-        },
-        "virtualMachines_myVMSS_2784c833_name": {
-            "value": null
-        },
-        "virtualMachines_myVMSS_c956832b_name": {
-            "value": null
-        },
-        "autoscalesettings_myVMSSautoscale_name": {
-            "value": null
-        },
-        "networkInterfaces_my_vnet_nic01_32a5af3e_name": {
-            "value": null
-        },
-        "networkInterfaces_my_vnet_nic01_d631bbc4_name": {
-            "value": null
-        },
-        "publicIPAddresses_myLoadBalancer_publicip_name": {
-            "value": null
-        },
-        "networkSecurityGroups_basicNsgmy_vnet_nic01_name": {
-            "value": null
-        },
-        "publicIPAddresses_publicIp_my_vnet_nic01_32a5af3e_name": {
-            "value": null
-        },
-        "publicIPAddresses_publicIp_my_vnet_nic01_d631bbc4_name": {
-            "value": null
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachineScaleSets_myVMSS_name": {
+      "value": null
+    },
+    "virtualNetworks_vnet_canadacentral_externalid": {
+      "value": null
+    },
+    "loadBalancers_myLoadBalancer_externalid": {
+      "value": null
+    },
+    "networkSecurityGroups_basicNsgvnet_canadacentral_nic01_externalid": {
+      "value": null
     }
+  }
 }
