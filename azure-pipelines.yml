@@ -15,6 +15,7 @@ variables:
 
 steps:
 
+
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template Key-vault'
   inputs:
