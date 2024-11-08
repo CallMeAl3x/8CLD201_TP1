@@ -9,6 +9,8 @@ trigger:
 pool: "default"
 
 variables:
+- name: keyName
+  value: "myVaultKeyy"
 - name: CloudInitContent
 
 steps:
@@ -25,7 +27,7 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_keyvault.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_keyvault.json'
-    overrideParameters: '-myVaultKeyy_name $(keyName)'
+    overrideParameters: '-vaults_myVaultKeyy_name $(keyName)'
     deploymentMode: 'Validation'
 
 - task: AzureResourceManagerTemplateDeployment@3
@@ -40,8 +42,9 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_keyvault.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_keyvault.json'
-    overrideParameters: '-myVaultKeyy_name $(keyName)'
+    overrideParameters: '-vaults_myVaultKeyy_name $(keyName)'
     deploymentMode: 'Incremental'
+
 - task: PowerShell@2
   displayName: 'Could Init'
   inputs:
