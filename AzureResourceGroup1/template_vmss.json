@@ -31,10 +31,6 @@
         "tier": "Standard",
         "capacity": 2
       },
-      "zones": [
-        "1",
-        "2"
-      ],
       "properties": {
         "singlePlacementGroup": false,
         "orchestrationMode": "Flexible",
@@ -151,7 +147,6 @@
         "additionalCapabilities": {
           "hibernationEnabled": false
         },
-        "zoneBalance": false,
         "platformFaultDomainCount": 1,
         "constrainedMaximumCapacity": false
       }
@@ -159,25 +154,25 @@
     {
       "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
       "apiVersion": "2024-07-01",
-      "name": "[concat(parameters('virtualMachineScaleSets_myVMSS_name'), '/', parameters('virtualMachineScaleSets_myVMSS_name'), '_7452a8e5')]",
+      "name": "[concat(parameters('virtualMachineScaleSets_myVMSS_name'), '/', parameters('virtualMachineScaleSets_myVMSS_name'), '_dfd2bd1c')]",
       "location": "CanadaCentral",
       "dependsOn": [
         "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_myVMSS_name'))]"
       ],
       "zones": [
-        "2"
+        null
       ]
     },
     {
       "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
       "apiVersion": "2024-07-01",
-      "name": "[concat(parameters('virtualMachineScaleSets_myVMSS_name'), '/', parameters('virtualMachineScaleSets_myVMSS_name'), '_829529b1')]",
+      "name": "[concat(parameters('virtualMachineScaleSets_myVMSS_name'), '/', parameters('virtualMachineScaleSets_myVMSS_name'), '_e0f7bb5a')]",
       "location": "CanadaCentral",
       "dependsOn": [
         "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_myVMSS_name'))]"
       ],
       "zones": [
-        "1"
+        null
       ]
     }
   ]
