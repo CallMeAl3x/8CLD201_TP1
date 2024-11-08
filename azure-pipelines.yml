@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - none
 
@@ -15,7 +10,7 @@ variables:
 
 steps:
 
-
+# Validation du modèle ARM pour le Key Vault
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template Key-vault'
   inputs:
@@ -31,6 +26,7 @@ steps:
     overrideParameters: '-vaults_myVaultKeyy_name $(keyName)'
     deploymentMode: 'Validation'
 
+# Déploiement du modèle ARM pour le Key Vault
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Deploy ARM Template Key-Vault'
   inputs:
@@ -46,8 +42,9 @@ steps:
     overrideParameters: '-vaults_myVaultKeyy_name $(keyName)'
     deploymentMode: 'Incremental'
 
+# Lecture du CloudInitContent
 - task: PowerShell@2
-  displayName: 'Could Init'
+  displayName: 'Cloud Init Script'
   inputs:
     targetType: 'inline'
     script: |
@@ -57,20 +54,24 @@ steps:
       Write-Host $encodedContent
       Write-Host "##vso[task.setvariable variable=CloudInitContent;]$encodedContent"
 
+# Affichage du CloudInitContent encodé
 - script: |
     echo $(CloudInitContent)
 
+# Récupération du mot de passe depuis Azure KeyVault
 - task: AzureKeyVault@2
-  displayName: 'Azure key-vault password'
+  displayName: 'Retrieve Password from KeyVault'
   inputs:
     azureSubscription: 'Azure subscription 1(1)(24be8910-56d3-4f24-ad46-85f03521f320)'
     KeyVaultName: '$(keyName)'
     SecretsFilter: 'motDePasse'
     RunAsPreJob: false
 
+# Affichage du mot de passe récupéré
 - script: | 
-      echo New value $(AzureKey.motDePasse)
+    echo "New value $(AzureKey.motDePasse)"
 
+# Validation du modèle ARM pour la VM
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template VM'
   inputs:
@@ -83,9 +84,10 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_vmss.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_vmss.json'
-    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(motDePasse)'
+    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(AzureKey.motDePasse)'
     deploymentMode: 'Validation'
 
+# Déploiement du modèle ARM pour la VM
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Deploy ARM Template VM'
   inputs:
@@ -98,5 +100,5 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_vmss.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_vmss.json'
-    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(motDePasse)'
+    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(AzureKey.motDePasse)'
     deploymentMode: 'Incremental'
