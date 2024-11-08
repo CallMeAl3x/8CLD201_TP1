@@ -15,6 +15,22 @@ variables:
 
 steps:
 
+- task: PowerShell@2
+  displayName: 'Vérifier et purger le coffre Key Vault si supprimé'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $vaultName = "$(keyName)"
+      $location = "Canada Central"
+      $vault = az keyvault list-deleted --query "[?name=='$vaultName']" | ConvertFrom-Json
+      if ($vault) {
+        az keyvault purge --name $vaultName --location $location
+        Write-Host "Coffre $vaultName purgé avec succès."
+      } else {
+        Write-Host "Aucun coffre supprimé nommé $vaultName trouvé."
+      }
+      
+
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template Key-vault'
   inputs:
