@@ -78,7 +78,7 @@ steps:
     azureResourceManagerConnection: 'Azure subscription 1(24be8910-56d3-4f24-ad46-85f03521f320)'
     subscriptionId: '24be8910-56d3-4f24-ad46-85f03521f320'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'projet-azure'
+    resourceGroupName: 'myVMSS_group'
     location: 'Canada Central'
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_vmss.json'
