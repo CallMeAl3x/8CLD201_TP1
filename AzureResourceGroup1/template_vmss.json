@@ -410,7 +410,9 @@
                         }
                       }
                     ],
-                    "networkSecurityGroup": "[if( equals( parameters('networkInterfaceConfigurations')[copyIndex('networkInterfaceConfigurations')].nsgId, ''), json('null'),json(concat('{\"id\": \"', parameters('networkInterfaceConfigurations')[copyIndex('networkInterfaceConfigurations')].nsgId, '\"}')))]"
+                    "networkSecurityGroup": {
+                      "id": "[resourceId('projet-azure', 'Microsoft.Network/networkSecurityGroups', 'basicNsgvnet-canadacentral-nic01')]"
+                    }
                   }
                 }
               }
