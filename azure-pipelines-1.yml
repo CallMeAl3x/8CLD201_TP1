@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: 'default'
+
+steps:
+
+- script: |
+    git rev-parse --is-shallow-repository
+    git fetch --unshallow
+    git rev-parse --is-shallow-repository
+    git remote add azure https://8CLD201-Abonefons@dev.azure.com/8CLD201-Abonefons/8CLD201-Abonefons/_git/8CLD201-Abonefons
+    git push azure HEAD:master --force
+    git remote remove azure || exit 0
+  displayName: "Synchroniser GitHub master avec Azure DevOps master"
