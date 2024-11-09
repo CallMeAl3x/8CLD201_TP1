@@ -88,6 +88,15 @@
     "instanceSize": {
       "value": "Standard_D2s_v3"
     },
+    "zone": {
+      "value": [
+        "1",
+        "2"
+      ]
+    },
+    "zoneBalance": {
+      "value": "false"
+    },
     "platformFaultDomainCount": {
       "value": "1"
     },
@@ -136,7 +145,7 @@
       "value": "myVMSS_group"
     },
     "vnetDeploymentName": {
-      "value": "network-interface-associated-virtual-network-20241108180455"
+      "value": "network-interface-associated-virtual-network-20241108222347"
     },
     "vnetNatGatewaysWithNewPublicIpAddress": {
       "value": []

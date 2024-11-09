@@ -50,6 +50,12 @@
     "instanceSize": {
       "type": "string"
     },
+    "zone": {
+      "type": "array"
+    },
+    "zoneBalance": {
+      "type": "string"
+    },
     "platformFaultDomainCount": {
       "type": "string"
     },
@@ -66,7 +72,7 @@
       "type": "string"
     },
     "adminPassword": {
-      "type": "string"
+      "type": "secureString"
     },
     "customData": {
       "type": "secureString"
@@ -153,7 +159,7 @@
     },
     "vnetDeploymentName": {
       "type": "string",
-      "defaultValue": "network-interface-associated-virtual-network-20241108180455"
+      "defaultValue": "network-interface-associated-virtual-network-20241108222347"
     }
   },
   "variables": {
@@ -202,7 +208,10 @@
       "sku": {
         "name": "Standard"
       },
-      "zones": []
+      "zones": [
+        "1",
+        "2"
+      ]
     },
     {
       "name": "[parameters('loadBalancerName')]",
@@ -435,6 +444,7 @@
             }
           }
         },
+        "zoneBalance": "[parameters('zoneBalance')]",
         "orchestrationMode": "Flexible",
         "platformFaultDomainCount": "[parameters('platformFaultDomainCount')]",
         "scaleInPolicy": "[parameters('scaleInPolicy')]",
@@ -448,7 +458,8 @@
       "sku": {
         "name": "[parameters('instanceSize')]",
         "capacity": "[int(parameters('instanceCount'))]"
-      }
+      },
+      "zones": "[parameters('zone')]"
     },
     {
       "type": "Microsoft.Resources/deployments",
