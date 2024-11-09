@@ -17,7 +17,7 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template Key-vault'
   inputs:
-    deploymentScope: 'Resource Group'  # Portée de déploiement : Groupe de ressources
+    deploymentScope: 'Resource Group'
     azureResourceManagerConnection: 'Azure subscription 1(1)(24be8910-56d3-4f24-ad46-85f03521f320)'  # Connexion à la souscription Azure
     subscriptionId: '24be8910-56d3-4f24-ad46-85f03521f320'
     action: 'Create Or Update Resource Group'  # Action : Créer ou mettre à jour le groupe de ressources
