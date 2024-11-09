@@ -149,7 +149,7 @@
     },
     "vnetResourceGroupName": {
       "type": "string",
-      "defaultValue": "projet-azure"
+      "defaultValue": "myVMSS_group"
     },
     "vnetDeploymentName": {
       "type": "string",
