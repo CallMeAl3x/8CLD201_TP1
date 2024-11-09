@@ -1,36 +1,35 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
+# Déclencheur de pipeline désactivé pour l'instant (aucun trigger automatique)
 trigger:
 - none
 
+# Spécifie le pool d'agents où les tâches seront exécutées (ici, le pool par défaut)
 pool: "default"
 
+# Définit des variables globales pour le pipeline
 variables:
 - name: keyName
-  value: "myVaultKeyy"
-- name: CloudInitContent
+  value: "myVaultKeyy"  # Nom de la clé du Key Vault
+- name: CloudInitContent  # Variable pour stocker le contenu encodé de Cloud-init
 
 steps:
 
-
+# Tâche Azure pour valider le déploiement du modèle ARM du Key Vault
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template Key-vault'
   inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Azure subscription 1(1)(24be8910-56d3-4f24-ad46-85f03521f320)'
+    deploymentScope: 'Resource Group'  # Portée de déploiement : Groupe de ressources
+    azureResourceManagerConnection: 'Azure subscription 1(1)(24be8910-56d3-4f24-ad46-85f03521f320)'  # Connexion à la souscription Azure
     subscriptionId: '24be8910-56d3-4f24-ad46-85f03521f320'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'key-vault'
-    location: 'Canada Central'
-    templateLocation: 'Linked artifact'
-    csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_keyvault.json'
-    csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_keyvault.json'
-    overrideParameters: '-vaults_myVaultKeyy_name $(keyName)'
-    deploymentMode: 'Validation'
+    action: 'Create Or Update Resource Group'  # Action : Créer ou mettre à jour le groupe de ressources
+    resourceGroupName: 'key-vault'  # Nom du groupe de ressources
+    location: 'Canada Central'  # Région pour le déploiement
+    templateLocation: 'Linked artifact'  # Emplacement du modèle ARM
+    csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_keyvault.json'  # Fichier de modèle JSON pour Key Vault
+    csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_keyvault.json'  # Fichier de paramètres JSON
+    overrideParameters: '-vaults_myVaultKeyy_name $(keyName)'  # Paramètre remplacé pour le nom de la clé
+    deploymentMode: 'Validation'  # Mode de déploiement : validation seulement
 
+# Tâche Azure pour déployer le modèle ARM du Key Vault
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Deploy ARM Template Key-Vault'
   inputs:
@@ -44,33 +43,38 @@ steps:
     csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_keyvault.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_keyvault.json'
     overrideParameters: '-vaults_myVaultKeyy_name $(keyName)'
-    deploymentMode: 'Incremental'
+    deploymentMode: 'Incremental'  # Mode de déploiement : mise à jour incrémentale
 
+# Tâche PowerShell pour encoder le contenu de Cloud-init en Base64 et le stocker dans une variable
 - task: PowerShell@2
   displayName: 'Could Init'
   inputs:
     targetType: 'inline'
     script: |
-      $CloudContent = Get-Content -Path .\AzureResourceGroup1\Cloud-init.txt -Raw
+      $CloudContent = Get-Content -Path .\AzureResourceGroup1\Cloud-init.txt -Raw  # Charge le contenu de Cloud-init
       Write-Host $CloudContent
-      $encodedContent = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($CloudContent))
+      $encodedContent = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($CloudContent))  # Encode en Base64
       Write-Host $encodedContent
-      Write-Host "##vso[task.setvariable variable=CloudInitContent;]$encodedContent"
+      Write-Host "##vso[task.setvariable variable=CloudInitContent;]$encodedContent"  # Stocke dans la variable CloudInitContent
 
+# Tâche de script pour afficher la variable encodée CloudInitContent
 - script: |
     echo $(CloudInitContent)
 
+# Tâche pour récupérer un secret depuis Azure Key Vault
 - task: AzureKeyVault@2
   displayName: 'Azure key-vault password'
   inputs:
     azureSubscription: 'Azure subscription 1(1)(24be8910-56d3-4f24-ad46-85f03521f320)'
-    KeyVaultName: '$(keyName)'
-    SecretsFilter: 'motDePasse'
+    KeyVaultName: '$(keyName)'  # Nom du Key Vault
+    SecretsFilter: 'motDePasse'  # Filtre pour ne récupérer que le secret 'motDePasse'
     RunAsPreJob: false
 
+# Tâche de script pour afficher la valeur du mot de passe récupéré depuis Azure Key Vault
 - script: | 
       echo New value $(AzureKey.motDePasse)
 
+# Tâche pour valider le déploiement du modèle ARM pour une machine virtuelle (VM)
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Validate ARM Template VM'
   inputs:
@@ -81,11 +85,12 @@ steps:
     resourceGroupName: 'myVMSS_group'
     location: 'Canada Central'
     templateLocation: 'Linked artifact'
-    csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_vmss.json'
+    csmFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\template_vmss.json'  # Fichier de modèle pour la VM
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceGroup1\parameters_vmss.json'
-    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(motDePasse)'
+    overrideParameters: '-customData $(CloudInitContent) -adminPassword $(motDePasse)'  # Paramètres avec données Cloud-init et mot de passe admin
     deploymentMode: 'Validation'
 
+# Tâche pour déployer le modèle ARM de la VM
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: 'Deploy ARM Template VM'
   inputs:
